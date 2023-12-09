@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        h1 {
+            color: #d70d0d;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #location {
+          width: 100%;
+         padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+         box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #d70d0d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #9c0909;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Rental Form</h1>
+
+    <div class="form-container">
+        <form action="submit_form.php" method="post">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="carNumber">Car Number:</label>
+            <input type="text" id="car_number" name="carNumber" required>
+
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" value="" readonly>
+
+            <label for="pickupDate">Pickup Date:</label>
+            <input type="date" id="pickup_date" name="pickup_date" required>
+
+            <label for="returnDate">Return Date:</label>
+            <input type="date" id="return_date" name="return_date" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+   <!-- Add this script block inside the <script> tag in form.html -->
+<script>
+    // Function to extract parameters from the URL
+    function getUrlParameters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const location = urlParams.get('location');
+        const carNumber = urlParams.get('carNumber');
+        const price = urlParams.get('price');
+
+        return { location, carNumber, price };
+    }
+
+    // Function to set values in the form
+    function setFormValues() {
+        const locationInput = document.getElementById('location');
+        const carNumberInput = document.getElementById('car_number');
+        const priceInput = document.getElementById('price');
+
+        const { location, carNumber, price } = getUrlParameters();
+
+        if (location) {
+            locationInput.value = location;
+        }
+
+        if (carNumber) {
+            carNumberInput.value = carNumber;
+        }
+
+        if (price) {
+            priceInput.value = `$${price}/night`;
+        }
+    }
+
+    // Call the function when the page loads
+    window.onload = setFormValues;
+</script>
+
+    
+    
+</body>
+
+</html>

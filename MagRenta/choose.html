@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/p/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #d70d0d;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        #vanList {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .van {
+            max-width: 300px;
+            margin: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .van:hover {
+            transform: scale(1.03);
+        }
+
+        .swiper-container {
+            width: 100%;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            overflow: hidden;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .van-details {
+            padding: 15px;
+        }
+
+        .van-location {
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .van-description {
+            color: #777;
+            margin-bottom: 12px;
+        }
+
+        .book-now-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #d70d0d;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 0 0 8px 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .book-now-button:hover {
+            background-color: #212529;
+        }
+
+        .view-details-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 0 0 8px 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            margin-top: 8px;
+        }
+
+        .view-details-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Available Cars on Magalang</h1>
+    </header>       
+    <button onclick="goBack()" style="margin: 10px; padding: 10px;">Back</button>
+
+    <div id="vanList"></div>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/p/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/p/npm/lg-fullscreen@1.2.8/dist/lg-fullscreen.min.js"></script>
+    <script>
+       const vans = [
+    { id: 1, location: 'Ayala', images: ['assets/van1.jpg', 'assets/van2.jpg', 'assets/van3.jpg', 'assets/van4.jpg','assets/van5.jpg','assets/van6.png','assets/van7.png'] },
+    { id: 2, location: 'La Paz', images: ['assets/type.png', 'assets/van5.jpg', 'assets/van1.jpg'] },
+    { id: 3, location: 'Sta.Lucia', images: ['assets/van1.jpg', 'assets/van1.jpg', 'assets/van5.jpg'] },
+    { id: 4, location: 'Escaler', images: ['assets/van1.jpg', 'assets/van5.jpg', 'assets/van4.jpg'] },
+    { id: 5, location: 'San agustin', images: ['assets/van1.jpg', 'assets/van5.jpg', 'assets/van4.jpg'] },
+    { id: 6, location: 'San Isidro', images: ['assets/van1.jpg', 'assets/van4.jpg', 'assets/van5.jpg'] },
+    
+];
+        function goBack() {
+        window.location.href = 'index.html';
+    }
+
+
+        function initializeSwiper(van) {
+            const vanElement = document.createElement('div');
+            vanElement.classList.add('van');
+
+            const swiperContainer = document.createElement('div');
+            swiperContainer.classList.add('swiper-container');
+
+            const swiperWrapper = document.createElement('div');
+            swiperWrapper.classList.add('swiper-wrapper');
+
+            van.images.forEach(image => {
+                const swiperSlide = document.createElement('div');
+                swiperSlide.classList.add('swiper-slide');
+
+                const imgElement = document.createElement('img');
+                imgElement.src = image;
+                imgElement.alt = van.location;
+
+                swiperSlide.appendChild(imgElement);
+                swiperWrapper.appendChild(swiperSlide);
+            });
+
+            swiperContainer.appendChild(swiperWrapper);
+
+            const vanDetails = document.createElement('div');
+            vanDetails.classList.add('van-details');
+
+            vanDetails.innerHTML = `
+            <div class="van-location"><strong>Location:</strong> ${van.location}</div>
+           
+             <a href="#" class="book-now-button" onclick="bookNow(${van.id})">Book Now</a>
+             <a href="van${van.id}.html" class="view-details-button">View Details</a>
+
+        `;
+
+            vanElement.appendChild(swiperContainer);
+            vanElement.appendChild(vanDetails);
+
+            document.getElementById('vanList').appendChild(vanElement);
+
+            swiperContainer.addEventListener('click', function () {
+                lightGallery(swiperContainer, {
+                    dynamic: true,
+                    dynamicEl: van.images.map(image => ({ src: image, thumb: image })),
+                    index: 0,
+                });
+            });
+
+            new Swiper(swiperContainer, {
+                slidesPerView: 1,
+            });
+        }
+
+        vans.forEach(initializeSwiper);
+
+        function bookNow(vanId) {
+            window.location.href = `form.html?id=${vanId}`;
+        }
+    </script>
+    <button onclick="goBack()" style="margin: 10px; padding: 10px;">Back</button>
+</body>
+
+</html>
